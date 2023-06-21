@@ -1,8 +1,15 @@
-android/
-Build/
-ios/
-linux/
-macos/
-test/
-web/
-windows/
+/build
+
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Logs
+logs
+*.log
