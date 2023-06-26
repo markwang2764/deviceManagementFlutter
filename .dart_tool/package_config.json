@@ -32,8 +32,8 @@
       "languageVersion": "2.18"
     },
     {
-      "name": "english_words",
-      "rootUri": "file:///Users/mark/.pub-cache/hosted/pub.dev/english_words-4.0.0",
+      "name": "cupertino_icons",
+      "rootUri": "file:///Users/mark/.pub-cache/hosted/pub.dev/cupertino_icons-1.0.5",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
@@ -92,20 +92,8 @@
       "languageVersion": "2.12"
     },
     {
-      "name": "nested",
-      "rootUri": "file:///Users/mark/.pub-cache/hosted/pub.dev/nested-1.0.0",
-      "packageUri": "lib/",
-      "languageVersion": "2.12"
-    },
-    {
       "name": "path",
       "rootUri": "file:///Users/mark/.pub-cache/hosted/pub.dev/path-1.8.3",
-      "packageUri": "lib/",
-      "languageVersion": "2.12"
-    },
-    {
-      "name": "provider",
-      "rootUri": "file:///Users/mark/.pub-cache/hosted/pub.dev/provider-6.0.5",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
@@ -158,13 +146,13 @@
       "languageVersion": "2.14"
     },
     {
-      "name": "flutter_application_1",
+      "name": "mine_platform_app",
       "rootUri": "../",
       "packageUri": "lib/",
       "languageVersion": "3.0"
     }
   ],
-  "generated": "2023-06-21T02:27:53.905727Z",
+  "generated": "2023-06-26T02:35:46.627552Z",
   "generator": "pub",
   "generatorVersion": "3.0.5"
 }
