@@ -1,18 +1,36 @@
 import 'package:flutter/material.dart';
+import 'package:mine_platform_app/anotherDoc/widget_stack.dart';
 import 'package:mine_platform_app/officialDoc/gestureDetector_sample.dart';
 import 'package:mine_platform_app/officialDoc/shopping_list_item.dart';
 
 void main() {
-  runApp(
-    const MaterialApp(
-      title: 'Shopping app',
-      home: ShoppingList(products: [
-        Product(name: 'Eggs'),
-        Product(name: 'Flour'),
-        Product(name: 'Chocolate chips')
-      ]),
-    )
-  );
+  runApp(WidgetStack());
+}
+class MyApp1 extends StatelessWidget{
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return MaterialApp(
+      home: Flex(
+        direction: Axis.horizontal,
+        children: [
+          Container(
+            color: Colors.blue,
+            width: 100,
+            height: 100,
+          ),
+          LayoutBuilder(builder: (_, constraints){
+            print(constraints);
+            return Container(
+              color: Colors.red,
+              width: 100,
+              height: 100,
+            );
+          })
+        ],
+      ),
+    );
+  }
 }
 
 class TutorialHome extends StatelessWidget {
