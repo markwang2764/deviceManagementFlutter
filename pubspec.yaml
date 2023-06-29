@@ -8,27 +8,19 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
   cupertino_icons: ^1.0.2
-
+  http: ^1.1.0
+  dio: ^5.2.1+1
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  flutter_lints: ^2.0.0
 
 flutter:
   uses-material-design: true
   assets:
     - assets/images/
     - assets/data/
-    - assets/images/widgets/
     - assets/flutter.db
     - assets/version.json
-  fonts: # 配置字体，可配置多个，支持ttf和otf,ttc等字体资源
-    - family: CHOPS
-      fonts:
-#        - asset: assets/fonts/CHOPS.TTF
-    - family: TolyIcon
-      fonts:
-#        - asset: assets/iconfont/iconfont.ttf
+
