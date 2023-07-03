@@ -37,8 +37,8 @@ class HttpUtil {
       inters.add(reqInterceptor);
     }
     _dio.interceptors.addAll(inters);
-    _dio.httpClientAdapter =
-        Http2Adapter(ConnectionManager(idleTimeout: Duration(seconds: 10)));
+    // _dio.httpClientAdapter =
+    //     Http2Adapter(ConnectionManager(idleTimeout: Duration(seconds: 10)));
     try {
       Options options = Options()
         ..method = method

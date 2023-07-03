@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mine_platform_app/routes.dart';
+import 'package:mine_platform_app/utils/common.dart';
 import 'package:mine_platform_app/utils/http_request/api.dart';
 
 import '../../utils/http_request/request.dart';
@@ -79,17 +80,22 @@ class _SignUpFormState extends State<SingUpForm> {
   }
 
   Future getUserRoleInfo() async {
-    print(1);
     try {
       var res = await HttpUtil.get(Api.findRoleVosByLoginName);
-      print(res);
+      return res;
     } catch (e) {
       print(e);
     }
   }
 
   void _onLoginNameChange() {
-    getUserRoleInfo();
+    // print('-----------> onloginname');
+    // Function func =
+    //     CommonUtil.debounce(getUserRoleInfo, Duration(milliseconds: 3000));
+
+    var res = getUserRoleInfo();
+    print('----------->');
+    print(res);
     print('loginname: ${_loginNameTextController.text}');
   }
 
