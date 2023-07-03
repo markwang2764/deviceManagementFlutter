@@ -4,11 +4,14 @@ import 'config.dart';
 
 class HttpRequest {
   static final BaseOptions baseOptions = BaseOptions(
-      baseUrl: HttpConfig.baseUrl, connectTimeout: HttpConfig.timeout);
-  static final Dio dio = Dio(baseOptions);
-  static Future<T> _request<T>(String url,
+      baseUrl: HttpConfig.baseUrl,
+      connectTimeout: HttpConfig.connectTimeout,
+      receiveTimeout: HttpConfig.receiveTimeout);
+  static final Dio _dio = Dio(baseOptions);
+  static Future<T> _request<T>(String path,
       {String method = 'get',
       Map<String, dynamic>? params,
+      Object? data,
       Options? options,
       Interceptor? reqInterceptor}) async {
     Interceptor defaultInterceptor = InterceptorsWrapper(
@@ -26,9 +29,14 @@ class HttpRequest {
     if (reqInterceptor != null) {
       inters.add(reqInterceptor);
     }
-    dio.interceptors.addAll(inters);
+    _dio.interceptors.addAll(inters);
     try {
-      Response res = await dio.request(url, queryParameters: parmas, Options options)
+      Response res = await _dio.request(path,
+          queryParameters: params,
+          options: Options(method: method, contentType: options?.contentType));
+      if (res.statusCode == 200 || res.statusCode == 201) {
+        return res;
+      }
     } on DioException catch (e) {
       return Future.error(e);
     }

@@ -57,7 +57,7 @@ class _IndexPageState extends State<IndexPage> {
           backgroundColor: Colors.white,
           type: BottomNavigationBarType.fixed,
           unselectedItemColor: Colors.black,
-          selectedItemColor: Colors.cyanAccent,
+          selectedItemColor: Colors.green,
           unselectedFontSize: 12,
           selectedFontSize: 12,
           items: items

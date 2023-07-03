@@ -56,6 +56,18 @@
       "languageVersion": "3.0"
     },
     {
+      "name": "flutter_easyloading",
+      "rootUri": "file:///Users/mark/.pub-cache/hosted/pub.dev/flutter_easyloading-3.0.5",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "flutter_spinkit",
+      "rootUri": "file:///Users/mark/.pub-cache/hosted/pub.dev/flutter_spinkit-5.2.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "flutter_test",
       "rootUri": "file:///Users/mark/dev/flutter/packages/flutter_test",
       "packageUri": "lib/",
@@ -164,7 +176,7 @@
       "languageVersion": "3.0"
     }
   ],
-  "generated": "2023-06-29T08:39:58.246438Z",
+  "generated": "2023-07-03T02:20:40.891590Z",
   "generator": "pub",
   "generatorVersion": "3.0.5"
 }
