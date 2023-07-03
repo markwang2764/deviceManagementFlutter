@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mine_platform_app/routes.dart';
+import 'package:mine_platform_app/utils/http_request/api.dart';
+
+import '../../utils/http_request/request.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
@@ -40,18 +43,19 @@ class SingUpForm extends StatefulWidget {
 }
 
 class _SignUpFormState extends State<SingUpForm> {
-  final _firstNameTextController = TextEditingController();
-  final _lastNameTextController = TextEditingController();
-  final _usernameTextController = TextEditingController();
+  final _loginNameTextController = TextEditingController();
+  final _passwordTextController = TextEditingController();
+  final _roleTextController = TextEditingController();
   double _formProgress = 0;
+
   void _updateFormProgress() {
     var progress = 0.0;
-    final controllers = [
-      _firstNameTextController,
-      _lastNameTextController,
-      _usernameTextController
-    ];
 
+    final controllers = [
+      _loginNameTextController,
+      _passwordTextController,
+      _roleTextController
+    ];
     for (final controller in controllers) {
       if (controller.value.text.isNotEmpty) {
         progress += 1 / controllers.length;
@@ -71,8 +75,36 @@ class _SignUpFormState extends State<SingUpForm> {
   @override
   void initState() {
     super.initState();
+    _loginNameTextController.addListener(_onLoginNameChange);
   }
-  // void findRoleVo
+
+  Future getUserRoleInfo() async {
+    print(1);
+    try {
+      var res = await HttpUtil.get(Api.findRoleVosByLoginName);
+      print(res);
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  void _onLoginNameChange() {
+    getUserRoleInfo();
+    print('loginname: ${_loginNameTextController.text}');
+  }
+
+  @override
+  void dispose() {
+    final controllers = [
+      _loginNameTextController,
+      _passwordTextController,
+      _roleTextController
+    ];
+    controllers.forEach((v) {
+      v.dispose();
+    });
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -86,21 +118,21 @@ class _SignUpFormState extends State<SingUpForm> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextFormField(
-              controller: _firstNameTextController,
-              decoration: const InputDecoration(hintText: '账号'),
+              controller: _loginNameTextController,
+              decoration: const InputDecoration(hintText: '登录名'),
             ),
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextFormField(
-              controller: _lastNameTextController,
+              controller: _passwordTextController,
               decoration: const InputDecoration(hintText: '密码'),
             ),
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextFormField(
-              controller: _usernameTextController,
+              controller: _roleTextController,
               decoration: const InputDecoration(hintText: '角色'),
             ),
           ),

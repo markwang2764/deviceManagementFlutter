@@ -1,5 +1,5 @@
 class HttpConfig {
-  static const String baseUrl = '';
+  static const String baseUrl = 'http://192.168.1.243:9990';
   static const Duration connectTimeout = Duration(
       days: 0,
       hours: 0,

@@ -1,16 +1,17 @@
 import 'dart:convert';
-
+import 'package:dio_http2_adapter/dio_http2_adapter.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 import 'config.dart';
 
-class HttpRequest {
+class HttpUtil {
   static final BaseOptions baseOptions = BaseOptions(
       baseUrl: HttpConfig.baseUrl,
       connectTimeout: HttpConfig.connectTimeout,
       receiveTimeout: HttpConfig.receiveTimeout);
   static final Dio _dio = Dio(baseOptions);
+
   static Future<T> _request<T>(String path,
       {String method = 'get',
       Map<String, dynamic>? params,
@@ -19,6 +20,9 @@ class HttpRequest {
       Interceptor? reqInterceptor}) async {
     Interceptor defaultInterceptor = InterceptorsWrapper(
       onRequest: (RequestOptions options, RequestInterceptorHandler handler) {
+        print("path---------->" + options.path);
+        print("method---------->" + options.method);
+        print("header----------->" + options.headers.toString());
         return handler.next(options);
       },
       onResponse: (Response response, ResponseInterceptorHandler handler) {
@@ -33,6 +37,8 @@ class HttpRequest {
       inters.add(reqInterceptor);
     }
     _dio.interceptors.addAll(inters);
+    _dio.httpClientAdapter =
+        Http2Adapter(ConnectionManager(idleTimeout: Duration(seconds: 10)));
     try {
       Options options = Options()
         ..method = method
@@ -51,12 +57,13 @@ class HttpRequest {
         return Future.error('HTTP错误');
       }
     } on DioException catch (e) {
-      EasyLoading.showInfo(_dioError(e));
+      // EasyLoading.showInfo(_dioError(e));
       return Future.error(_dioError(e));
     }
   }
 
   static String _dioError(DioException error) {
+    print(error);
     switch (error.type) {
       case DioExceptionType.connectionTimeout:
         return "网络连接超时，请检查网络设置";

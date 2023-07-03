@@ -57,6 +57,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.2.1+1"
+  dio_http2_adapter:
+    dependency: "direct main"
+    description:
+      name: dio_http2_adapter
+      sha256: a18145a44fd4ceb9c057b46409f608effcc9e28fd2e99c478307b995eac29259
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.3.0"
   fake_async:
     dependency: transitive
     description:
@@ -99,6 +107,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.1.0"
+  http2:
+    dependency: transitive
+    description:
+      name: http2
+      sha256: "38db0c4aa9f1cd238a5d2e86aa0cc7cc91c77e0c6c94ba64bbe85e4ff732a952"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.2.0"
   http_parser:
     dependency: transitive
     description:
