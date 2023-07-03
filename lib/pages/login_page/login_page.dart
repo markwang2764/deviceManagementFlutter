@@ -13,6 +13,7 @@ class LoginPage extends StatelessWidget {
 
 class SignUpScreen extends StatelessWidget {
   const SignUpScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -66,6 +67,12 @@ class _SignUpFormState extends State<SingUpForm> {
     print(indexPage);
     Navigator.pushNamed(context, indexPage);
   }
+
+  @override
+  void initState() {
+    super.initState();
+  }
+  // void findRoleVo
 
   @override
   Widget build(BuildContext context) {
