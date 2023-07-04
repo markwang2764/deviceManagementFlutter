@@ -20,9 +20,6 @@ class HttpUtil {
       Interceptor? reqInterceptor}) async {
     Interceptor defaultInterceptor = InterceptorsWrapper(
       onRequest: (RequestOptions options, RequestInterceptorHandler handler) {
-        print("path---------->" + options.path);
-        print("method---------->" + options.method);
-        print("header----------->" + options.headers.toString());
         return handler.next(options);
       },
       onResponse: (Response response, ResponseInterceptorHandler handler) {

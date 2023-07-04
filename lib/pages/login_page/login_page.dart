@@ -1,8 +1,7 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:mine_platform_app/routes.dart';
-import 'package:mine_platform_app/utils/common.dart';
 import 'package:mine_platform_app/utils/http_request/api.dart';
-
 import '../../utils/http_request/request.dart';
 
 class LoginPage extends StatelessWidget {
@@ -47,6 +46,7 @@ class _SignUpFormState extends State<SingUpForm> {
   final _loginNameTextController = TextEditingController();
   final _passwordTextController = TextEditingController();
   final _roleTextController = TextEditingController();
+  Timer? _debounce;
   double _formProgress = 0;
 
   void _updateFormProgress() {
@@ -79,7 +79,7 @@ class _SignUpFormState extends State<SingUpForm> {
     _loginNameTextController.addListener(_onLoginNameChange);
   }
 
-  Future getUserRoleInfo() async {
+  getUserRoleInfo() async {
     try {
       var res = await HttpUtil.get(Api.findRoleVosByLoginName);
       return res;
@@ -89,18 +89,18 @@ class _SignUpFormState extends State<SingUpForm> {
   }
 
   void _onLoginNameChange() {
-    // print('-----------> onloginname');
-    // Function func =
-    //     CommonUtil.debounce(getUserRoleInfo, Duration(milliseconds: 3000));
-
-    var res = getUserRoleInfo();
-    print('----------->');
-    print(res);
-    print('loginname: ${_loginNameTextController.text}');
+    if (_debounce?.isActive ?? false) _debounce?.cancel();
+    _debounce = Timer(const Duration(milliseconds: 1000), () {
+      var _res = {};
+      getUserRoleInfo().then((res) {
+        _res = res;
+      });
+    });
   }
 
   @override
   void dispose() {
+    _debounce?.cancel();
     final controllers = [
       _loginNameTextController,
       _passwordTextController,
