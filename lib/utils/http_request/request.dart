@@ -21,13 +21,56 @@ class HttpUtil {
       Interceptor? reqInterceptor}) async {
     Interceptor defaultInterceptor = InterceptorsWrapper(
       onRequest: (RequestOptions options, RequestInterceptorHandler handler) {
+        String requestStr =
+            "\n==================== REQUEST ====================\n"
+            "- URL:\n${options.baseUrl + options.path}\n"
+            "- METHOD: ${options.method}\n";
+        requestStr += "- HEADER:\n${options.headers.toString()}\n";
+
+        final data = options.data;
+        if (data != null) {
+          if (data is Map)
+            requestStr += "- BODY:\n${data.toString()}\n";
+          else if (data is FormData) {
+            final formDataMap = Map()
+              ..addEntries(data.fields)
+              ..addEntries(data.files);
+            requestStr += "- BODY:\n${formDataMap.toString()}\n";
+          } else
+            requestStr += "- BODY:\n${data.toString()}\n";
+        }
+        print(requestStr);
         return handler.next(options);
       },
       onResponse: (Response response, ResponseInterceptorHandler handler) {
+        String responseStr =
+            "\n==================== RESPONSE ====================\n";
+        responseStr += "- HEADER:\n{";
+        response.headers.forEach(
+            (key, list) => responseStr += "\n  " + "\"$key\" : \"$list\",");
+        responseStr += "\n}\n";
+        responseStr += "- STATUS: ${response.statusCode}\n";
+
+        if (response.data != null) {
+          responseStr += "- BODY:\n ${_parseResponse(response)}";
+        }
+        printWrapped(responseStr);
+
         return handler.next(response);
       },
-      onError: (DioException e, ErrorInterceptorHandler handler) {
-        return handler.next(e);
+      onError: (DioException err, ErrorInterceptorHandler handler) {
+        String errorStr = "\n==================== ERROR ====================\n";
+        errorStr += "- HEADER:\n${err.response?.headers.map.toString()}\n";
+        if (err.response != null && err.response?.data != null) {
+          print('╔ ${err.type.toString()}');
+          errorStr += "- ERROR:\n${_parseResponse(err.response!)}\n";
+        } else {
+          errorStr += "- ERRORTYPE: ${err.type}\n";
+          errorStr += "- MSG: ${err.message}\n";
+        }
+        print(errorStr);
+
+        return handler.next(err);
       },
     );
     List<Interceptor> inters = [defaultInterceptor];
@@ -41,6 +84,7 @@ class HttpUtil {
       Options options = Options()
         ..method = method
         ..headers = headers;
+
       Response res = await _dio.request(path,
           queryParameters: params, data: data, options: options);
       if (res.statusCode == 200 || res.statusCode == 201) {
@@ -120,6 +164,24 @@ class HttpUtil {
         message = '请求失败，错误码：$errorCode';
     }
     EasyLoading.showError(message);
+  }
+
+  static void printWrapped(String text) {
+    final pattern = new RegExp('.{1,800}'); // 800 is the size of each chunk
+    pattern.allMatches(text).forEach((match) => print(match.group(0)));
+  }
+
+  static String _parseResponse(Response response) {
+    String responseStr = "";
+    var data = response.data;
+    if (data is Map)
+      responseStr += data.toString();
+    else if (data is List)
+      responseStr += data.toString();
+    else
+      responseStr += response.data.toString();
+
+    return responseStr;
   }
 
   static Future<T> get<T>(String path,

@@ -24,16 +24,14 @@ class SignUpScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[200],
-      body: const Center(
-        child: SizedBox(
-          width: 400,
-          child: Card(
+        backgroundColor: Colors.grey[200],
+        body: Container(
+          padding: EdgeInsets.only(top: 50),
+          child: SizedBox(
+            width: 400,
             child: SingUpForm(),
           ),
-        ),
-      ),
-    );
+        ));
   }
 }
 
@@ -50,32 +48,8 @@ class _SignUpFormState extends State<SingUpForm> {
   final _loginNameTextController = TextEditingController();
   final _passwordTextController = TextEditingController();
   final _roleTextController = TextEditingController();
+  String _loginRoleTag = '';
   Timer? _debounce;
-  double _formProgress = 0;
-
-  void _updateFormProgress() {
-    var progress = 0.0;
-
-    final controllers = [
-      _loginNameTextController,
-      _passwordTextController,
-      _roleTextController
-    ];
-    for (final controller in controllers) {
-      if (controller.value.text.isNotEmpty) {
-        progress += 1 / controllers.length;
-      }
-    }
-
-    setState(() {
-      _formProgress = progress;
-    });
-  }
-
-  void _showWelcomeScreen() {
-    print(indexPage);
-    Navigator.pushNamed(context, indexPage);
-  }
 
   @override
   void initState() {
@@ -97,11 +71,15 @@ class _SignUpFormState extends State<SingUpForm> {
     if (_debounce?.isActive ?? false) _debounce?.cancel();
     _debounce = Timer(const Duration(milliseconds: 1000), () {
       getUserRoleInfo().then((res) {
+        print(res);
         LoginUserRoleModel loginUserRoleModel =
             LoginUserRoleModel.fromJson(res);
         if (loginUserRoleModel.code == 0) {
           List<Data>? _data = loginUserRoleModel.data;
           _roleTextController.text = _data?[0].roleName as String;
+          setState(() {
+            _loginRoleTag = _data?[0].uid as String;
+          });
         }
       });
     });
@@ -126,36 +104,38 @@ class _SignUpFormState extends State<SingUpForm> {
     final _formKey = GlobalKey<FormState>();
     return Form(
       key: _formKey,
-      onChanged: _updateFormProgress,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          AnimatedProgressIndicator(value: _formProgress),
-          Text('登录', style: Theme.of(context).textTheme.headlineMedium),
+          // Text('登录', style: Theme.of(context).textTheme.headlineMedium),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextFormField(
               controller: _loginNameTextController,
-              decoration: const InputDecoration(hintText: '登录名'),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return '请输入用户名';
-                }
-                return null;
+              decoration: InputDecoration(
+                labelText: "用户名",
+                hintText: "用户名或邮箱",
+                icon: Icon(Icons.person),
+              ),
+              validator: (v) {
+                return v!.trim().isNotEmpty ? null : "用户名不能为空";
               },
             ),
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextFormField(
-              obscureText: true,
+              // obscureText: true,
               controller: _passwordTextController,
-              decoration: const InputDecoration(hintText: '密码'),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return '请输入密码';
-                }
-                return null;
+              decoration: InputDecoration(
+                labelText: "密码",
+                hintText: "您的登录密码",
+                icon: Icon(Icons.lock),
+              ),
+              obscureText: true,
+              validator: (v) {
+                return v!.trim().length > 5 ? null : "密码不能为空！";
               },
             ),
           ),
@@ -163,94 +143,45 @@ class _SignUpFormState extends State<SingUpForm> {
             padding: const EdgeInsets.all(8.0),
             child: TextFormField(
               controller: _roleTextController,
-              decoration: const InputDecoration(hintText: '角色'),
+              decoration: InputDecoration(
+                labelText: "角色",
+                hintText: "登录用户的校色",
+                icon: Icon(Icons.verified_user_sharp),
+              ),
             ),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 16.0),
-            child: ElevatedButton(
-              onPressed: () {
-                if (_formKey.currentState!.validate()) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Processing Data')),
-                  );
-                }
-              },
-              child: const Text('Submit'),
-              style: ButtonStyle(
-                foregroundColor: MaterialStateProperty.resolveWith(
-                    (Set<MaterialState> states) {
-                  return states.contains(MaterialState.disabled)
-                      ? null
-                      : Colors.white;
-                }),
-                backgroundColor: MaterialStateProperty.resolveWith(
-                    (Set<MaterialState> states) {
-                  return states.contains(MaterialState.disabled)
-                      ? null
-                      : Colors.blue;
-                }),
-              ),
-            ),
-          )
+              padding: const EdgeInsets.fromLTRB(5, 10, 5, 0),
+              child: Row(
+                children: [
+                  Expanded(
+                      child: ElevatedButton(
+                    child: Padding(
+                      padding: const EdgeInsets.all(5.0),
+                      child: Text("登录"),
+                    ),
+                    onPressed: () async {
+                      if ((_formKey.currentState as FormState).validate()) {
+                        print(_roleTextController.value);
+                        try {
+                          var res = await HttpUtil.post(Api.login, data: {
+                            "loginName": _loginNameTextController.text,
+                            "password": _passwordTextController.text,
+                            "loginRole": _loginRoleTag
+                          });
+                          print(res);
+                          return res;
+                        } catch (e) {
+                          print(e);
+                          throw e;
+                        }
+                      }
+                    },
+                  ))
+                ],
+              ))
         ],
       ),
     );
-  }
-}
-
-class AnimatedProgressIndicator extends StatefulWidget {
-  final double value;
-  const AnimatedProgressIndicator({
-    super.key,
-    required this.value,
-  });
-
-  @override
-  State<AnimatedProgressIndicator> createState() {
-    return _AnimatedProgressIndicatorState();
-  }
-}
-
-class _AnimatedProgressIndicatorState extends State<AnimatedProgressIndicator>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
-  late Animation<Color?> _colorAnimation;
-  late Animation<double> _curveAnimation;
-  @override
-  void initState() {
-    super.initState();
-    _controller = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 1200));
-    final colorTween = TweenSequence([
-      TweenSequenceItem(
-          tween: ColorTween(begin: Colors.red, end: Colors.orange), weight: 1),
-      TweenSequenceItem(
-          tween: ColorTween(begin: Colors.orange, end: Colors.yellow),
-          weight: 1),
-      TweenSequenceItem(
-        tween: ColorTween(begin: Colors.yellow, end: Colors.green),
-        weight: 1,
-      ),
-    ]);
-    _colorAnimation = _controller.drive(colorTween);
-    _curveAnimation = _controller.drive(CurveTween(curve: Curves.easeIn));
-  }
-
-  @override
-  void didUpdateWidget(covariant AnimatedProgressIndicator oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    _controller.animateTo(widget.value);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return AnimatedBuilder(
-        animation: _controller,
-        builder: (context, child) => LinearProgressIndicator(
-              value: _curveAnimation.value,
-              valueColor: _colorAnimation,
-              backgroundColor: _colorAnimation.value?.withOpacity(0.4),
-            ));
   }
 }
