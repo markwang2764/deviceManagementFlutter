@@ -93,7 +93,10 @@ class _SignUpFormState extends State<SingUpForm> {
     _debounce = Timer(const Duration(milliseconds: 1000), () {
       var _res = {};
       getUserRoleInfo().then((res) {
-        _res = res;
+        if (res.code == 0) {
+          String roleName = res.data[0].roleName;
+          _roleTextController.text = roleName;
+        }
       });
     });
   }
