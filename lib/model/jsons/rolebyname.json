@@ -1,0 +1,17 @@
+{
+  "code": 0,
+  "data": [
+    {
+      "uid": "",
+      "ctype": "",
+      "roleName": "",
+      "roleNameAlias": "",
+      "roleDesc": "",
+      "createAt": "",
+      "groupTag": "",
+      "order": "",
+      "organizationOrder": "",
+      "companyTag": ""
+    }
+  ]
+}

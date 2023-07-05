@@ -1,5 +1,9 @@
 import 'dart:async';
+import 'dart:convert';
+import 'dart:math';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:mine_platform_app/model/loginUserRole_Model.dart';
 import 'package:mine_platform_app/routes.dart';
 import 'package:mine_platform_app/utils/http_request/api.dart';
 import '../../utils/http_request/request.dart';
@@ -85,17 +89,19 @@ class _SignUpFormState extends State<SingUpForm> {
       return res;
     } catch (e) {
       print(e);
+      throw e;
     }
   }
 
   void _onLoginNameChange() {
     if (_debounce?.isActive ?? false) _debounce?.cancel();
     _debounce = Timer(const Duration(milliseconds: 1000), () {
-      var _res = {};
       getUserRoleInfo().then((res) {
-        if (res.code == 0) {
-          String roleName = res.data[0].roleName;
-          _roleTextController.text = roleName;
+        LoginUserRoleModel loginUserRoleModel =
+            LoginUserRoleModel.fromJson(res);
+        if (loginUserRoleModel.code == 0) {
+          List<Data>? _data = loginUserRoleModel.data;
+          _roleTextController.text = _data?[0].roleName as String;
         }
       });
     });
@@ -117,7 +123,9 @@ class _SignUpFormState extends State<SingUpForm> {
 
   @override
   Widget build(BuildContext context) {
+    final _formKey = GlobalKey<FormState>();
     return Form(
+      key: _formKey,
       onChanged: _updateFormProgress,
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -129,13 +137,26 @@ class _SignUpFormState extends State<SingUpForm> {
             child: TextFormField(
               controller: _loginNameTextController,
               decoration: const InputDecoration(hintText: '登录名'),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return '请输入用户名';
+                }
+                return null;
+              },
             ),
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextFormField(
+              obscureText: true,
               controller: _passwordTextController,
               decoration: const InputDecoration(hintText: '密码'),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return '请输入密码';
+                }
+                return null;
+              },
             ),
           ),
           Padding(
@@ -145,22 +166,31 @@ class _SignUpFormState extends State<SingUpForm> {
               decoration: const InputDecoration(hintText: '角色'),
             ),
           ),
-          TextButton(
-            onPressed: _formProgress == 1 ? _showWelcomeScreen : null,
-            child: const Text('登录'),
-            style: ButtonStyle(
-              foregroundColor: MaterialStateProperty.resolveWith(
-                  (Set<MaterialState> states) {
-                return states.contains(MaterialState.disabled)
-                    ? null
-                    : Colors.white;
-              }),
-              backgroundColor: MaterialStateProperty.resolveWith(
-                  (Set<MaterialState> states) {
-                return states.contains(MaterialState.disabled)
-                    ? null
-                    : Colors.blue;
-              }),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 16.0),
+            child: ElevatedButton(
+              onPressed: () {
+                if (_formKey.currentState!.validate()) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Processing Data')),
+                  );
+                }
+              },
+              child: const Text('Submit'),
+              style: ButtonStyle(
+                foregroundColor: MaterialStateProperty.resolveWith(
+                    (Set<MaterialState> states) {
+                  return states.contains(MaterialState.disabled)
+                      ? null
+                      : Colors.white;
+                }),
+                backgroundColor: MaterialStateProperty.resolveWith(
+                    (Set<MaterialState> states) {
+                  return states.contains(MaterialState.disabled)
+                      ? null
+                      : Colors.blue;
+                }),
+              ),
             ),
           )
         ],

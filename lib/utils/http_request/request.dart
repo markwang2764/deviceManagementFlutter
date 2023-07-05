@@ -8,6 +8,7 @@ import 'config.dart';
 class HttpUtil {
   static final BaseOptions baseOptions = BaseOptions(
       baseUrl: HttpConfig.baseUrl,
+      // responseType: ResponseType.plain,
       connectTimeout: HttpConfig.connectTimeout,
       receiveTimeout: HttpConfig.receiveTimeout);
   static final Dio _dio = Dio(baseOptions);
