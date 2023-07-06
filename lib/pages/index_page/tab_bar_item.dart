@@ -1,9 +1,11 @@
+import 'package:flutter/material.dart';
+
 class TabBarItem {
   final String title;
-  final String norImage;
-  final String selImage;
+  final Icon norIcon;
+  final Icon acIcon;
   TabBarItem(
-      {required this.title, required this.norImage, required this.selImage});
+      {required this.title, required this.norIcon, required this.acIcon});
 }
 
 class TabInfosItem {

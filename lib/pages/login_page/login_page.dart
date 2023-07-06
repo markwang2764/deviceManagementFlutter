@@ -103,7 +103,6 @@ class _SignUpFormState extends State<SingUpForm> {
     final _formKey = GlobalKey<FormState>();
     return Form(
       key: _formKey,
-      autovalidateMode: AutovalidateMode.onUserInteraction,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -160,9 +159,6 @@ class _SignUpFormState extends State<SingUpForm> {
                       child: Text("登录"),
                     ),
                     onPressed: () async {
-                      print('---------------->');
-                      print(indexPage);
-                      Navigator.pushNamed(context, "/");
                       SharedPreferences prefs =
                           await SharedPreferences.getInstance();
                       if ((_formKey.currentState as FormState).validate()) {
@@ -181,7 +177,7 @@ class _SignUpFormState extends State<SingUpForm> {
                                 "loginUserInfoData", _data.toString());
                             print('---------------->');
                             print(indexPage);
-                            Navigator.pushNamed(context, indexPage);
+                            // Navigator.pushNamed(context, indexPage);
                           }
                           return res;
                         } catch (e) {

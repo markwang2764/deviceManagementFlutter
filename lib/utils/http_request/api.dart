@@ -3,4 +3,6 @@ class Api {
       '/login/findRoleVosByLoginName/system';
 
   static const String login = '/login/login';
+
+  static const String findMyProcessJob = '/processJob/findMyProcessJob';
 }

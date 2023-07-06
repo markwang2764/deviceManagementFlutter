@@ -1,8 +1,10 @@
 import 'dart:convert';
-import 'package:dio_http2_adapter/dio_http2_adapter.dart';
+import 'dart:io';
 import 'package:dio/dio.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:mine_platform_app/routes.dart';
 
+import '../../main.dart';
+import '../../store/localStorage.dart';
 import 'config.dart';
 
 class HttpUtil {
@@ -20,7 +22,8 @@ class HttpUtil {
       Map<String, dynamic>? headers,
       Interceptor? reqInterceptor}) async {
     Interceptor defaultInterceptor = InterceptorsWrapper(
-      onRequest: (RequestOptions options, RequestInterceptorHandler handler) {
+      onRequest:
+          (RequestOptions options, RequestInterceptorHandler handler) async {
         String requestStr =
             "\n==================== REQUEST ====================\n"
             "- URL:\n${options.baseUrl + options.path}\n"
@@ -42,7 +45,8 @@ class HttpUtil {
         print(requestStr);
         return handler.next(options);
       },
-      onResponse: (Response response, ResponseInterceptorHandler handler) {
+      onResponse:
+          (Response response, ResponseInterceptorHandler handler) async {
         String responseStr =
             "\n==================== RESPONSE ====================\n";
         responseStr += "- HEADER:\n{";
@@ -50,12 +54,16 @@ class HttpUtil {
             (key, list) => responseStr += "\n  " + "\"$key\" : \"$list\",");
         responseStr += "\n}\n";
         responseStr += "- STATUS: ${response.statusCode}\n";
-
         if (response.data != null) {
           responseStr += "- BODY:\n ${_parseResponse(response)}";
         }
+        if (response.headers["authorization"] != null) {
+          print("\n==================== authorization ====================\n");
+          print(response.headers["authorization"]);
+          LocalStorage.instance
+              .saveToken(response.headers["authorization"].toString());
+        }
         printWrapped(responseStr);
-
         return handler.next(response);
       },
       onError: (DioException err, ErrorInterceptorHandler handler) {
@@ -64,12 +72,16 @@ class HttpUtil {
         if (err.response != null && err.response?.data != null) {
           print('╔ ${err.type.toString()}');
           errorStr += "- ERROR:\n${_parseResponse(err.response!)}\n";
+          errorStr += "- statusCode:\n${err.response?.statusCode}\n";
+          if (err.response?.statusCode == 401) {
+            navigatorKey.currentState
+                ?.pushNamedAndRemoveUntil(loginPage, (route) => false);
+          }
         } else {
           errorStr += "- ERRORTYPE: ${err.type}\n";
           errorStr += "- MSG: ${err.message}\n";
         }
         print(errorStr);
-
         return handler.next(err);
       },
     );
@@ -80,10 +92,19 @@ class HttpUtil {
     _dio.interceptors.addAll(inters);
     // _dio.httpClientAdapter =
     //     Http2Adapter(ConnectionManager(idleTimeout: Duration(seconds: 10)));
+    var token = await LocalStorage.instance.readToken();
+
+    var _headerWidthBear = {
+      HttpHeaders.authorizationHeader: token
+    };
+
     try {
       Options options = Options()
         ..method = method
-        ..headers = headers;
+        ..headers = {
+          ...?headers,
+          ..._headerWidthBear
+        };
 
       Response res = await _dio.request(path,
           queryParameters: params, data: data, options: options);
@@ -94,7 +115,6 @@ class HttpUtil {
           return json.decode(res.data.toString());
         }
       } else {
-        EasyLoading.showInfo('error: ${res.statusCode}');
         _handleHttpError(res.statusCode!);
         return Future.error('HTTP错误');
       }
@@ -163,7 +183,7 @@ class HttpUtil {
       default:
         message = '请求失败，错误码：$errorCode';
     }
-    EasyLoading.showError(message);
+    print(message);
   }
 
   static void printWrapped(String text) {
