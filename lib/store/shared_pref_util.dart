@@ -10,15 +10,15 @@ class SharedPrefUtil {
   }
 
   /// 保存用户名
-  saveUserInfo(String username) async {
+  saveUserInfo(String userInfo) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString("username", username);
+    await prefs.setString("userInfo", userInfo);
   }
 
   /// 读取保存的用户名
   readUserInfo() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? name = prefs.getString("username");
+    String? name = prefs.getString("userInfo");
     return name;
   }
 }

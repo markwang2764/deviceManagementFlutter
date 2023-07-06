@@ -1,11 +1,11 @@
 import 'dart:async';
-import 'dart:convert';
-import 'dart:math';
-import 'package:dio/dio.dart';
+
 import 'package:flutter/material.dart';
+import 'package:mine_platform_app/model/loginUserInfo_Model.dart';
 import 'package:mine_platform_app/model/loginUserRole_Model.dart';
 import 'package:mine_platform_app/routes.dart';
 import 'package:mine_platform_app/utils/http_request/api.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../utils/http_request/request.dart';
 
 class LoginPage extends StatelessWidget {
@@ -71,11 +71,10 @@ class _SignUpFormState extends State<SingUpForm> {
     if (_debounce?.isActive ?? false) _debounce?.cancel();
     _debounce = Timer(const Duration(milliseconds: 1000), () {
       getUserRoleInfo().then((res) {
-        print(res);
         LoginUserRoleModel loginUserRoleModel =
             LoginUserRoleModel.fromJson(res);
         if (loginUserRoleModel.code == 0) {
-          List<Data>? _data = loginUserRoleModel.data;
+          List<LoginUserRoleData>? _data = loginUserRoleModel.data;
           _roleTextController.text = _data?[0].roleName as String;
           setState(() {
             _loginRoleTag = _data?[0].uid as String;
@@ -161,6 +160,11 @@ class _SignUpFormState extends State<SingUpForm> {
                       child: Text("登录"),
                     ),
                     onPressed: () async {
+                      print('---------------->');
+                      print(indexPage);
+                      Navigator.pushNamed(context, "/");
+                      SharedPreferences prefs =
+                          await SharedPreferences.getInstance();
                       if ((_formKey.currentState as FormState).validate()) {
                         print(_roleTextController.value);
                         try {
@@ -169,7 +173,16 @@ class _SignUpFormState extends State<SingUpForm> {
                             "password": _passwordTextController.text,
                             "loginRole": _loginRoleTag
                           });
-                          print(res);
+                          LoginUserInfoModel loginUserInfoModel =
+                              LoginUserInfoModel.fromJson(res);
+                          if (loginUserInfoModel.code == 0) {
+                            LoginUserInfoData? _data = loginUserInfoModel.data;
+                            await prefs.setString(
+                                "loginUserInfoData", _data.toString());
+                            print('---------------->');
+                            print(indexPage);
+                            Navigator.pushNamed(context, indexPage);
+                          }
                           return res;
                         } catch (e) {
                           print(e);

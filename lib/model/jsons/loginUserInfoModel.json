@@ -1,0 +1,49 @@
+{
+    "code" : 0,
+    "data" : {
+      "loginName" : "system",
+      "userAliasName" : "system",
+      "objectId" : "",
+      "email" : "dyoon@dyoon.com",
+      "status" : true,
+      "lastLoginTime" : "2023-07-06T01:08:26.280Z",
+      "defaultGroupTag" : "480304801029029888",
+      "defaultRoleTag" : "480304801058390016",
+      "folderTag" : "20150101010101504",
+      "userSysOrganization" : [ {
+        "uid" : "480304801029029888",
+        "ctype" : "SYSGROUP",
+        "objectName" : "超级管理员组",
+        "children" : [ {
+          "uid" : "480304801058390016",
+          "ctype" : "SYSROLE",
+          "objectName" : "超级管理员角色",
+          "children" : [ ],
+          "objectId" : "",
+          "nameAlias" : "superManagerRole",
+          "allowSpeciallyIpLogin" : false,
+          "userCount" : 1
+        } ],
+        "objectId" : "",
+        "nameAlias" : "superManagerGroup",
+        "allowSpeciallyIpLogin" : false,
+        "userCount" : 1
+      } ],
+      "loginGroupTag" : "480304801029029888",
+      "loginRoleTag" : "480304801058390016",
+      "enterpriseWeChatUserid" : "192.168.2.44",
+      "dingTalkUserid" : "",
+      "allowSpeciallyIpLogin" : false,
+      "allowSpeciallyIps" : "\u0000",
+      "allOnlineTime" : 27474,
+      "createAt" : "2022-08-01T05:36:04Z",
+      "updateAt" : "2022-08-01T05:36:04Z",
+      "onlineRemoteAddr" : "192.168.1.101",
+      "onlineUserCount" : 0,
+      "tags" : "",
+      "order" : 0,
+      "workshop" : false,
+      "uid" : "480304801154859008",
+      "ctype" : "SYSUSER"
+    }
+  }

@@ -1,15 +1,15 @@
 class LoginUserRoleModel {
   int? code;
-  List<Data>? data;
+  List<LoginUserRoleData>? data;
 
   LoginUserRoleModel({this.code, this.data});
 
   LoginUserRoleModel.fromJson(Map<String, dynamic> json) {
     code = json['code'];
     if (json['data'] != null) {
-      data = <Data>[];
+      data = <LoginUserRoleData>[];
       json['data'].forEach((v) {
-        data!.add(new Data.fromJson(v));
+        data!.add(new LoginUserRoleData.fromJson(v));
       });
     }
   }
@@ -24,7 +24,7 @@ class LoginUserRoleModel {
   }
 }
 
-class Data {
+class LoginUserRoleData {
   String? uid;
   String? ctype;
   String? roleName;
@@ -36,7 +36,7 @@ class Data {
   int? organizationOrder;
   String? companyTag;
 
-  Data(
+  LoginUserRoleData(
       {this.uid,
       this.ctype,
       this.roleName,
@@ -48,7 +48,7 @@ class Data {
       this.organizationOrder,
       this.companyTag});
 
-  Data.fromJson(Map<String, dynamic> json) {
+  LoginUserRoleData.fromJson(Map<String, dynamic> json) {
     uid = json['uid'];
     ctype = json['ctype'];
     roleName = json['roleName'];
