@@ -1,4 +1,8 @@
 class Api {
   static const String findRoleVosByLoginName =
-      'http://192.168.1.243:9990/login/findRoleVosByLoginName/system';
+      '/login/findRoleVosByLoginName/system';
+
+  static const String login = '/login/login';
+
+  static const String findMyProcessJob = '/processJob/findMyProcessJob';
 }
