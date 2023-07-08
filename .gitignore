@@ -14,4 +14,4 @@
 # Logs
 logs
 *.log
-.dart_tool/
+.dart_tool
