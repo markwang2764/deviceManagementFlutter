@@ -12,27 +12,55 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  List<int> mList = [];
-  List<ExpandState> expandStateList = [];
-
+  List _renderTasks = [];
   @override
   void initState() {
     getProcessTasks();
-    for (var i = 0; i < 10; i++) {
-      mList.add(i);
-      expandStateList.add(ExpandState(i, false));
-    }
     super.initState();
   }
 
   getProcessTasks() async {
-    print(1);
     try {
       var res = await HttpUtil.get(Api.findMyProcessJob);
-      print(res);
-      return res;
+      ProcessJobTaskModel processJobTaskModel =
+          ProcessJobTaskModel.fromJson(res);
+
+      if (processJobTaskModel.code == 0) {
+        List processTasks = processJobTaskModel.data!.processJobTask as List;
+
+        List tasks = [
+          {
+            "isOpen": false,
+            "title": '进行中的流程',
+            "data": processTasks.where((v) => v.processing == true).toList(),
+          },
+          {
+            "isOpen": false,
+            "title": '延迟的流程',
+            "data": processTasks.where((v) => v.delayed == true).toList(),
+          },
+          {
+            "isOpen": false,
+            "title": '追踪的流程',
+            "data": processTasks.where((v) => v.track == true).toList(),
+          },
+          {
+            "isOpen": false,
+            "title": '完成的流程',
+            "data": processTasks
+                .where((v) => v.processJobComplete == true)
+                .toList(),
+          },
+        ];
+        setState(() {
+          _renderTasks = tasks;
+          print(tasks);
+        });
+      } else {
+        // TODO list
+      }
     } catch (e) {
-      // print(e);
+      print(e);
       return e;
     }
   }
@@ -44,37 +72,41 @@ class _HomePageState extends State<HomePage> {
           title: Text('任务概览'),
         ),
         body: Container(
-          child: Center(
-              child: SingleChildScrollView(
+          child: SingleChildScrollView(
             child: ExpansionPanelList(
               expansionCallback: (index, bool) {
-                //回调
                 setState(() {
-                  expandStateList[index].isOpen =
-                      !expandStateList[index].isOpen;
+                  _renderTasks[index]['isOpen'] =
+                      !_renderTasks[index]['isOpen'];
                 });
               },
-              children: mList.map((index) {
+              children: _renderTasks.map((v) {
                 return ExpansionPanel(
                     headerBuilder: (context, isExpanded) {
                       return ListTile(
-                        title: Text('标题'),
-                        subtitle: Text("二级标题"),
+                        title: Text(v['title']),
                       );
                     },
-                    body: ListTile(
-                      title: Text('内容内容内容'),
+                    body: Container(
+                      constraints: BoxConstraints(maxHeight: 200),
+                      child: ListView(
+                        shrinkWrap: true,
+                        padding: EdgeInsets.all(10),
+                        children: v['data'].map<Widget>((d) {
+                          print(d.toString());
+                          return ListTile(
+                            leading: Image.network(
+                                "https://www.baidu.com/img/dong3_ce6e6a5ce66ab92f491f627981a2f77c.gif"),
+                            title: Text(d.objectName),
+                            subtitle: Text(d.processJobDesc),
+                          );
+                        }).toList(),
+                      ),
                     ),
-                    isExpanded: expandStateList[index].isOpen);
+                    isExpanded: v['isOpen']);
               }).toList(),
             ),
-          )),
+          ),
         ));
   }
-}
-
-class ExpandState {
-  var isOpen;
-  var index;
-  ExpandState(this.index, this.isOpen);
 }

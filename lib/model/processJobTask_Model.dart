@@ -77,7 +77,7 @@ class ProcessJobTask {
   bool? processJobComplete;
   String? httpDesc;
   String? completeDate;
-  List<String>? accepterUserTags;
+  List<dynamic>? accepterUserTags;
 
   ProcessJobTask(
       {this.uid,
@@ -129,7 +129,7 @@ class ProcessJobTask {
     processJobComplete = json['processJobComplete'];
     httpDesc = json['httpDesc'];
     completeDate = json['completeDate'];
-    accepterUserTags = json['accepterUserTags'].cast<String>();
+    accepterUserTags = json['accepterUserTags'];
   }
 
   Map<String, dynamic> toJson() {

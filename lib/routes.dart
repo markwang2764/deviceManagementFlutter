@@ -12,7 +12,9 @@ var router = {
 };
 var onGenerateRoute = (RouteSettings settings) {
   final String? name = settings.name;
+
   final Function pageContentBuilder = router[name] as Function;
+  print(pageContentBuilder.toString());
   if (settings.arguments != null) {
     final Route route = MaterialPageRoute(
         builder: (context) =>
