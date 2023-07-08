@@ -87,10 +87,10 @@ class _IndexPageState extends State<IndexPage> {
       body: PageView(
         controller: _controller,
         onPageChanged: (int page) {
-            setState(() {
-              _pageIndex = page;
-            });
-          },
+          setState(() {
+            _pageIndex = page;
+          });
+        },
         physics: Platform.isAndroid
             ? const PageScrollPhysics()
             : const NeverScrollableScrollPhysics(),
