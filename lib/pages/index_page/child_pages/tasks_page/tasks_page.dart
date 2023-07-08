@@ -36,9 +36,25 @@ class TabBarItemCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 15),
+      padding: EdgeInsets.all(15),
       child: Column(children: [
-        Text('装货时间'),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+                style: TextStyle(color: Colors.black, fontSize: 18),
+                '装货时间： 2023-05-23 10:00'),
+            Text(style: TextStyle(color: Colors.grey, fontSize: 14), '待出发'),
+          ],
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Text(
+                style: TextStyle(color: Colors.black87, fontSize: 14),
+                '装货时间： 2023-05-23 10:00'),
+          ],
+        ),
         Text('车次号'),
       ]),
     );
