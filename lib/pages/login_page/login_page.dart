@@ -173,7 +173,6 @@ class _SignUpFormState extends State<SingUpForm> {
                             LoginUserInfoData? _data = loginUserInfoModel.data;
                             await prefs.setString(
                                 "loginUserInfoData", _data.toString());
-
                             Navigator.pushReplacementNamed(context, indexPage);
                           }
                           return res;
