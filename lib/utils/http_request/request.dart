@@ -54,14 +54,11 @@ class HttpUtil {
             (key, list) => responseStr += "\n  " + "\"$key\" : \"$list\",");
         responseStr += "\n}\n";
         responseStr += "- STATUS: ${response.statusCode}\n";
-        if (response.data != null) {
-          responseStr += "- BODY:\n ${_parseResponse(response)}";
-        }
+
         if (response.headers["authorization"] != null) {
           print("\n==================== authorization ====================\n");
-          print(response.headers["authorization"]);
           LocalStorage.instance
-              .saveToken(response.headers["authorization"].toString());
+              .saveToken(response.headers["authorization"]![0]);
         }
         printWrapped(responseStr);
         return handler.next(response);
@@ -94,17 +91,12 @@ class HttpUtil {
     //     Http2Adapter(ConnectionManager(idleTimeout: Duration(seconds: 10)));
     var token = await LocalStorage.instance.readToken();
 
-    var _headerWidthBear = {
-      HttpHeaders.authorizationHeader: token
-    };
+    var _headerWidthBear = {HttpHeaders.authorizationHeader: token};
 
     try {
       Options options = Options()
         ..method = method
-        ..headers = {
-          ...?headers,
-          ..._headerWidthBear
-        };
+        ..headers = {...?headers, ..._headerWidthBear};
 
       Response res = await _dio.request(path,
           queryParameters: params, data: data, options: options);

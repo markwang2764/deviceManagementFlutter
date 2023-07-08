@@ -12,9 +12,7 @@ class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: const SignUpScreen(),
-    );
+    return const SignUpScreen();
   }
 }
 
@@ -175,9 +173,8 @@ class _SignUpFormState extends State<SingUpForm> {
                             LoginUserInfoData? _data = loginUserInfoModel.data;
                             await prefs.setString(
                                 "loginUserInfoData", _data.toString());
-                            print('---------------->');
-                            print(indexPage);
-                            // Navigator.pushNamed(context, indexPage);
+
+                            Navigator.pushReplacementNamed(context, indexPage);
                           }
                           return res;
                         } catch (e) {
