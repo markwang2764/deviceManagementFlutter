@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:mine_platform_app/model/loginUserInfo_Model.dart';
 import 'package:mine_platform_app/model/loginUserRole_Model.dart';
 import 'package:mine_platform_app/routes.dart';
+import 'package:mine_platform_app/store/localStorage.dart';
 import 'package:mine_platform_app/utils/http_request/api.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../../utils/http_request/request.dart';
 
 class LoginPage extends StatelessWidget {
@@ -157,8 +157,6 @@ class _SignUpFormState extends State<SingUpForm> {
                       child: Text("登录"),
                     ),
                     onPressed: () async {
-                      SharedPreferences prefs =
-                          await SharedPreferences.getInstance();
                       if ((_formKey.currentState as FormState).validate()) {
                         print(_roleTextController.value);
                         try {
@@ -171,9 +169,8 @@ class _SignUpFormState extends State<SingUpForm> {
                               LoginUserInfoModel.fromJson(res);
                           if (loginUserInfoModel.code == 0) {
                             LoginUserInfoData? _data = loginUserInfoModel.data;
-                            await prefs.setString(
-                                "loginUserInfoData", _data.toString());
-
+                            LocalStorage.instance
+                                .saveUserInfo(_data.toString());
                             Navigator.pushReplacementNamed(context, indexPage);
                           }
                           return res;

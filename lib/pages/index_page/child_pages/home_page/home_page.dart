@@ -54,7 +54,6 @@ class _HomePageState extends State<HomePage> {
         ];
         setState(() {
           _renderTasks = tasks;
-          print(tasks);
         });
       } else {
         // TODO list
@@ -93,7 +92,6 @@ class _HomePageState extends State<HomePage> {
                         shrinkWrap: true,
                         padding: EdgeInsets.all(10),
                         children: v['data'].map<Widget>((d) {
-                          print(d.toString());
                           return ListTile(
                             leading: Image.network(
                                 "https://www.baidu.com/img/dong3_ce6e6a5ce66ab92f491f627981a2f77c.gif"),
