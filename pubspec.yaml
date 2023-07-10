@@ -11,16 +11,14 @@ dependencies:
   cupertino_icons: ^1.0.2
   http: ^1.1.0
   dio: ^5.2.1+1
-  flutter_easyloading: ^3.0.5
-  dio_http2_adapter: ^2.0.0
   shared_preferences: ^2.2.0
-  json_annotation: ^4.8.1
-  
+  flutter_native_splash: ^2.3.1
+  qr_flutter: ^4.1.0
+  barcode_scan2: ^4.2.0
 dev_dependencies:
+  flutter_launcher_icons: ^0.13.1
   flutter_test:
     sdk: flutter
-  json_serializable: ^6.7.1
-  build_runner: ^2.4.6
 
 flutter:
   uses-material-design: true
@@ -29,4 +27,15 @@ flutter:
     - assets/data/
     - assets/flutter.db
     - assets/version.json
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/images/launch.png"
+
+flutter_native_splash:
+  color: "#42a5f5"
+  image: "assets/images/splash.png"
+  branding: "assets/images/zhong.png"
+
 

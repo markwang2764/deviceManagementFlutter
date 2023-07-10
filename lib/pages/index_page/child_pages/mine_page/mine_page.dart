@@ -7,11 +7,10 @@ class MinePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: Text(
-            '321321',
-            style: TextStyle(color: Colors.black),
-          ),
-          backgroundColor: Colors.white),
+          title:
+              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+        const Text('个人信息'),
+      ])),
       body: Scrollbar(
         child: ListView(
           padding: const EdgeInsets.only(top: 0, left: 0, right: 0),
