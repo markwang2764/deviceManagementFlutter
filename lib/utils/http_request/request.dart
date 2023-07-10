@@ -56,7 +56,6 @@ class HttpUtil {
         responseStr += "- STATUS: ${response.statusCode}\n";
 
         if (response.headers["authorization"] != null) {
-          print("\n==================== authorization ====================\n");
           LocalStorage.instance
               .saveToken(response.headers["authorization"]![0]);
         }
