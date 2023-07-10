@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:mine_platform_app/routes.dart';
 class MineSettingPage extends StatelessWidget {
   const MineSettingPage({Key? key}) : super(key: key);
 
@@ -68,7 +68,7 @@ class MineSettingPage extends StatelessWidget {
               clipBehavior: Clip.hardEdge,
               child: InkWell(
                 onTap: () {
-
+                  Navigator.pushNamed(context, mineResetPasswordPage);
                 },
                 splashColor: Color.fromARGB(255, 255, 255, 255).withAlpha(0),
                 child: Semantics(
