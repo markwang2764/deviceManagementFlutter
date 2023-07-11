@@ -62,7 +62,7 @@ class _BarcodeScanPageState extends State<BarCodeScanPage> {
 
   void dispose() {
     super.dispose();
-    _doBarCodeScan().cancel();
+    // _doBarCodeScan()..cancel();
   }
 
   @override
