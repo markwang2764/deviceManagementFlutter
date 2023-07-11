@@ -15,6 +15,7 @@ dependencies:
   flutter_native_splash: ^2.3.1
   qr_flutter: ^4.1.0
   barcode_scan2: ^4.2.0
+  geolocator: ^9.0.2
 dev_dependencies:
   flutter_launcher_icons: ^0.13.1
   flutter_test:
