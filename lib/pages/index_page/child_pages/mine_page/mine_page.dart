@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mine_platform_app/routes.dart';
 
 class MinePage extends StatelessWidget {
   const MinePage({Key? key}) : super(key: key);
@@ -6,18 +7,13 @@ class MinePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-          title:
-              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-        const Text('个人信息'),
-      ])),
-      body: Scrollbar(
+      body: SafeArea(
         child: ListView(
           padding: const EdgeInsets.only(top: 0, left: 0, right: 0),
           children: [
             Container(child: personalInformation()),
             Container(child: performanceInfo()),
-            Container(child: setting()),
+            Container(child: setting(context)),
           ],
         ),
       ),
@@ -36,18 +32,58 @@ class MinePage extends StatelessWidget {
               clipBehavior: Clip.hardEdge,
               child: InkWell(
                 onTap: () {},
-                splashColor: Color.fromARGB(255, 184, 218, 210).withAlpha(30),
-                highlightColor: Colors.transparent,
+                splashColor: Color.fromARGB(255, 255, 255, 255).withAlpha(0),
                 child: Semantics(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SizedBox(
-                        height: 50,
+                        height: 92,
                         child: Stack(
                           children: [
-                            Positioned.fill(
-                                left: 16, right: 16, child: Text("111")),
+                            Container(
+                                padding: const EdgeInsets.only(
+                                    left: 16, top: 0, right: 16),
+                                child: Row(
+                                  children: [
+                                    const Icon(
+                                      Icons.account_box_outlined,
+                                      color: const Color.fromARGB(255, 0, 0, 0),
+                                      size: 70.0,
+                                    ),
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Container(
+                                            padding: const EdgeInsets.only(
+                                                left: 4, top: 18),
+                                            child: Text(
+                                              '王乐康',
+                                              style: TextStyle(fontSize: 22),
+                                            ),
+                                          ),
+                                          Container(
+                                            padding:
+                                                const EdgeInsets.only(left: 4),
+                                            child: Text(
+                                              '手机号: 111111111111',
+                                              style: TextStyle(
+                                                color: Colors.grey[500],
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    const Icon(
+                                      Icons.arrow_forward_ios_rounded,
+                                      color: const Color.fromARGB(255, 0, 0, 0),
+                                      size: 25.0,
+                                    ),
+                                  ],
+                                )),
                           ],
                         ),
                       ),
@@ -74,8 +110,8 @@ class MinePage extends StatelessWidget {
               clipBehavior: Clip.hardEdge,
               child: InkWell(
                 onTap: () {},
-                splashColor: Color.fromARGB(255, 184, 218, 210).withAlpha(30),
-                highlightColor: Colors.transparent,
+                splashColor: Color.fromARGB(255, 255, 255, 255).withAlpha(0),
+                highlightColor: Color.fromARGB(255, 255, 255, 255).withAlpha(0),
                 child: Semantics(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -90,16 +126,16 @@ class MinePage extends StatelessWidget {
                               child: Column(
                                 children: [
                                   Row(children: [
-                                    Icon(
+                                    const Icon(
                                       Icons.bookmark,
                                       color: const Color.fromARGB(
-                                          239, 247, 190, 3),
+                                          255, 247, 190, 3),
                                       size: 20.0,
                                     ),
-                                    Text(
+                                    const Text(
                                       "我的业绩",
                                       style: TextStyle(
-                                        color: Color.fromARGB(239, 247, 190, 3),
+                                        color: Color.fromARGB(255, 247, 190, 3),
                                       ),
                                     )
                                   ]),
@@ -116,7 +152,7 @@ class MinePage extends StatelessWidget {
                                                 style: TextStyle(fontSize: 30),
                                               ),
                                             ),
-                                            Text(
+                                            const Text(
                                               '今日完成',
                                               style: TextStyle(fontSize: 14),
                                             ),
@@ -134,7 +170,7 @@ class MinePage extends StatelessWidget {
                                                 style: TextStyle(fontSize: 30),
                                               ),
                                             ),
-                                            Text(
+                                            const Text(
                                               '今日运载',
                                               style: TextStyle(fontSize: 14),
                                             ),
@@ -152,7 +188,7 @@ class MinePage extends StatelessWidget {
                                                 style: TextStyle(fontSize: 30),
                                               ),
                                             ),
-                                            Text(
+                                            const Text(
                                               '本月完成',
                                               style: TextStyle(fontSize: 14),
                                             ),
@@ -170,7 +206,7 @@ class MinePage extends StatelessWidget {
                                                 style: TextStyle(fontSize: 30),
                                               ),
                                             ),
-                                            Text(
+                                            const Text(
                                               '本月运载',
                                               style: TextStyle(fontSize: 14),
                                             ),
@@ -196,7 +232,7 @@ class MinePage extends StatelessWidget {
     );
   }
 
-  Widget setting() {
+  Widget setting(BuildContext context) {
     return SafeArea(
       top: false,
       bottom: false,
@@ -207,9 +243,10 @@ class MinePage extends StatelessWidget {
             child: Card(
               clipBehavior: Clip.hardEdge,
               child: InkWell(
-                onTap: () {},
-                splashColor: Color.fromARGB(255, 184, 218, 210).withAlpha(30),
-                highlightColor: Colors.transparent,
+                onTap: () {
+                  Navigator.pushNamed(context, mineSettingPage);
+                },
+                splashColor: Color.fromARGB(255, 255, 255, 255).withAlpha(0),
                 child: Semantics(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -218,26 +255,30 @@ class MinePage extends StatelessWidget {
                         height: 44,
                         child: Stack(
                           children: [
-                            Positioned(
-                                left: 16,
-                                top: 14,
-                                bottom: 0,
-                                // child:
-                                //   Icon(
-                                //     Icons.settings,
-                                //     color: const Color.fromARGB(255, 0, 0, 0),
-                                //     size: 30.0,
-                                //   ),
+                            Container(
+                                padding: const EdgeInsets.only(
+                                    left: 16, top: 12, right: 16),
                                 child: Row(
                                   children: [
-                                    Icon(
+                                    const Icon(
                                       Icons.settings_outlined,
                                       color: const Color.fromARGB(255, 0, 0, 0),
                                       size: 30.0,
                                     ),
-                                    Text(
-                                      '设置',
-                                      style: TextStyle(),
+                                    Expanded(
+                                      child: Container(
+                                        padding:
+                                            const EdgeInsets.only(left: 16),
+                                        child: const Text(
+                                          '设置',
+                                          style: TextStyle(fontSize: 16),
+                                        ),
+                                      ),
+                                    ),
+                                    const Icon(
+                                      Icons.arrow_forward_ios_rounded,
+                                      color: const Color.fromARGB(255, 0, 0, 0),
+                                      size: 25.0,
                                     ),
                                   ],
                                 )),
