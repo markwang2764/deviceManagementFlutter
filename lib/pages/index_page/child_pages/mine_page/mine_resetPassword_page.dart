@@ -87,7 +87,7 @@ class MineResetPasswordPage extends StatelessWidget {
                     )
                   )
                 }else{
-                  print("111")
+                  print("11")
                 }
               },
             },
