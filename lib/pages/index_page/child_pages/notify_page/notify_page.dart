@@ -27,15 +27,18 @@ class _BarcodeScanPageState extends State<BarCodeScanPage> {
   var _currentTime = DateTime.now().hour;
   bool? flashLight = true;
   _doBarCodeScan() async {
+    print('-------------------->');
+    Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+    print(position.latitude.toString());
+    print(position.longitude.toString());
+    return;
     var options = ScanOptions(
         autoEnableFlash: flashLight!,
         strings: {'cancel': '取消', 'flash_on': '闪光灯开/关', 'flash_off': '闪光灯开/关'});
 
     var result = await BarcodeScanner.scan(options: options);
-    Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
-    print(position.latitude.toString());
-    print(position.longitude.toString());
+
     ShowScanResult(result.type, result.rawContent, result.format,
         position.latitude.toString(), position.longitude.toString());
   }
