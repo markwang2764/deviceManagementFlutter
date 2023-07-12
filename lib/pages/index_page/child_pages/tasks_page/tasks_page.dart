@@ -1,4 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:mine_platform_app/store/localStorage.dart';
+
+import '../../../../model/loginUserInfo_Model.dart';
 
 class TasksPage extends StatelessWidget {
   const TasksPage({Key? key}) : super(key: key);
@@ -109,7 +114,14 @@ class _TabBarItemCard extends StatelessWidget {
         SizedBox(
           child: ElevatedButton(
             child: Text('确认出发'),
-            onPressed: () {},
+            onPressed: () async {
+              var a = await LocalStorage.instance.readUserInfo();
+              print(LoginUserInfoData.fromJson(jsonDecode(a)).loginName);
+              // LoginUserInfoData userInfoData =
+              //     LoginUserInfoData.fromJson(jsonDecode(a));
+
+              // print(userInfoData);
+            },
           ),
         )
       ]),

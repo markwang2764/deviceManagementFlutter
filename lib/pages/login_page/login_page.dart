@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:mine_platform_app/model/loginUserInfo_Model.dart';
@@ -169,8 +170,9 @@ class _SignUpFormState extends State<SingUpForm> {
                               LoginUserInfoModel.fromJson(res);
                           if (loginUserInfoModel.code == 0) {
                             LoginUserInfoData? _data = loginUserInfoModel.data;
+
                             LocalStorage.instance
-                                .saveUserInfo(_data.toString());
+                                .saveUserInfo(jsonEncode(_data));
                             Navigator.pushReplacementNamed(context, indexPage);
                           }
                           return res;

@@ -9,6 +9,11 @@ class LocalStorage {
     return _instance;
   }
 
+  clearAll() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
+  }
+
   saveToken(String userInfo) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString("token", userInfo);

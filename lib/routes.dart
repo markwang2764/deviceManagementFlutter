@@ -4,7 +4,6 @@ import 'package:mine_platform_app/pages/login_page/login_page.dart';
 import 'package:mine_platform_app/pages/index_page/child_pages/mine_page/mine_setting_page.dart';
 import 'package:mine_platform_app/pages/index_page/child_pages/mine_page/mine_resetPassword_page.dart';
 
-
 final String splashPath = 'splash';
 final String indexPage = "/";
 final String loginPage = '/login';
